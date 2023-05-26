@@ -44,7 +44,7 @@ int needfile(int argc, char **argv)
     {
     wchar_t c;
     int k = 0;
-    while ((c = fgetwc(f)) !=EOF)
+    while ((c = fgetwc(f)) != EOF)
     {
       if(c != '.' && c != ',' && c != ':' && c != ';' && c != '!' && c != '?' && c != '\n' && c != ' ')
       {
@@ -54,10 +54,20 @@ int needfile(int argc, char **argv)
             c = towlower(c);
           buf[k] = c;
           k++;
+          if(k > MAX_LEN)
+          {
+            wprintf(L"Слишком большой текст\n");
+            return 1;
+          }
         }
       } 
     }
     fclose(f);
+    if(k == 0)
+    {
+      wprintf(L"Файл пуст\n");
+      return 1;
+    }
     int response = palindrome(buf, k);
     if (response)
     {
@@ -65,7 +75,7 @@ int needfile(int argc, char **argv)
     } 
     else
     {
-      wprintf(L"Полиндромы не обнаружены\n");
+      wprintf(L"Полиндром не обнаружен\n");
     }
     }
   }
